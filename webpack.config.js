@@ -1,46 +1,23 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const {
-  FUSIONX_API_PORT,
-  FUSIONX_API_USERNAME,
-  FUSIONX_API_PASSWORD,
-  FUSIONX_WEBSOCKET_PORT
-} = process.env
-
 module.exports = {
   entry: './src/index.js',
   devtool: 'inline-source-map',
   devServer: {
-    contentBase: './dist',
+    contentBase: './build',
     hot: true
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': '"production"',
-        'FUSIONX_API_PORT': `"${FUSIONX_API_PORT}"`,
-        'FUSIONX_API_USERNAME': `"${FUSIONX_API_USERNAME}"`,
-        'FUSIONX_API_PASSWORD': `"${FUSIONX_API_PASSWORD}"`,
-        'FUSIONX_WEBSOCKET_PORT': `"${FUSIONX_WEBSOCKET_PORT}"`
-      }
-    }),
-    new webpack.HotModuleReplacementPlugin()
-  ],
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'build'),
     publicPath: '/'
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-        query: {
-          presets: ['env', 'react', 'stage-2']
-        }
+        test: /\.html$/,
+        loader: 'file-loader?name=[path][name].[ext]'
       },
       {
         test: /\.css$/,
@@ -48,7 +25,29 @@ module.exports = {
           'style-loader',
           'css-loader'
         ]
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader'
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              includePaths: [
+                'src/styles'
+              ]
+            }
+          }
+        ]
       }
     ]
-  }
+  },
+  plugins: [
+      new webpack.HotModuleReplacementPlugin()
+  ]
 };

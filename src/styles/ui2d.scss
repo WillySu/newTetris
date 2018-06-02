@@ -1,0 +1,10 @@
+table.grid-2d {
+  border-collapse: collapse;
+  border: 2px solid #444;
+
+  td {
+    border: 1px solid #aaa;
+    height: 36px;
+    width: 36px;
+  }
+}
