@@ -1,0 +1,5 @@
+jekyll quickstart
+https://jekyllrb.com/docs/quickstart/
+
+jekyll-github-pages
+https://programminghistorian.org/en/lessons/building-static-sites-with-jekyll-github-pages

@@ -10,6 +10,11 @@ function init () {
     const tetroL = new Tetromino();
     const table = new Table({ numOfCol: 10, numOfRow: 20, parentNode: root });
     const grid = new Grid({ numOfCol: 10, numOfRow: 20, uiComponent: table });
+
+    function addTetro () {
+        grid.addTetro({ tetro: tetroL, x: 2, y: 0 });
+    }
+
     const control = new Control({
         onMoveLeft: function () {
             grid.moveLeft();
@@ -21,12 +26,12 @@ function init () {
             grid.moveDown();
         },
         onAdd: function () {
-            grid.addTetro({ tetro: tetroL, x: 2, y: 0 });
+            addTetro();
         },
         parentNode: root
     });
 
-    grid.addTetro({ tetro: tetroL, x: 2, y: 0 });
+    addTetro();
 }
 
 window.addEventListener("DOMContentLoaded", init);
