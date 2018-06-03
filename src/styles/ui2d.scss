@@ -8,3 +8,16 @@ table.grid-2d {
     width: 36px;
   }
 }
+
+form.controlForm {
+  margin-top: 12px;
+
+  button {
+    margin-right: 6px;
+  }
+
+  :last-child {
+    margin-right: 0;
+    float: right;
+  }
+}

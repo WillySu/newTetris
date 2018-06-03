@@ -1,17 +1,37 @@
 export default class Tetromino {
-    constructor ({ name, x = 0, y = 0, xLimit = 10, yLimit = 20 } = {}) {
+    constructor ({ name, color } = {}) {
         this.name = name;
-        this.x = x;
-        this.y = y;
-        this.xLimit = xLimit;
-        this.yLimit = yLimit;
+        this.color = color || "red";
+
+        // 3 => [x, y] and Solid
+        // 2 => [x, y] and Empty
+        // 1 => Solid
+        // 0 => Empty
         this.rotations = [
-            [1],
-            [1],
-            [1],
-            [1]
-        ];
+            [
+                [1, 3, 1],
+                [1, 0, 0]
+            ],
+            [
+                [3, 0],
+                [1, 0],
+                [1, 1]
+            ],
+            [
+                [0, 2, 1],
+                [1, 1, 1]
+            ],
+            [
+                [1, 3],
+                [0, 1],
+                [0, 1]
+            ]
+        ]; // Default L
         this.rotationIndex = 0;
+    }
+
+    get rotation () {
+        return this.rotations[this.rotationIndex];
     }
 
     rotateLeft () {
@@ -27,30 +47,6 @@ export default class Tetromino {
 
         if (this.rotationIndex > 3) {
             this.rotationIndex = 0;
-        }
-    }
-
-    moveLeft () {
-        this.x--;
-
-        if (this.x < 0) {
-            this.x = 0;
-        }
-    }
-
-    moveRight () {
-        this.x++;
-
-        if (this.x > this.xLimit - 1) {
-            this.x = this.xLimit - 1;
-        }
-    }
-
-    drop () {
-        this.y++;
-
-        if (this.x > this.xLimit - 1) {
-            this.x = this.xLimit - 1;
         }
     }
 }
