@@ -3,3 +3,12 @@ https://jekyllrb.com/docs/quickstart/
 
 jekyll-github-pages
 https://programminghistorian.org/en/lessons/building-static-sites-with-jekyll-github-pages
+
+Run jekyll locally
+bundle exec jekyll serve --watch
+
+Demo page
+https://willysu.github.io/newTetris/
+
+Embed CSS - JavaScript in Jekyll
+https://notes.matthewgifford.com/inlining-css-and-javascript-in-jekyll-16b9af67e27f
