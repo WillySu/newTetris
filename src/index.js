@@ -12,10 +12,13 @@ function init () {
     const grid = new Grid({ numOfCol: 10, numOfRow: 20, uiComponent: table });
 
     function addTetro () {
-        grid.addTetro({ tetro: tetroL, x: 2, y: 0 });
+        grid.addTetro({ tetro: tetroL, x: 3, y: 0 });
     }
 
     const control = new Control({
+        onAdd: function () {
+            addTetro();
+        },
         onMoveLeft: function () {
             grid.moveLeft();
         },
@@ -25,8 +28,11 @@ function init () {
         onMoveDown: function () {
             grid.moveDown();
         },
-        onAdd: function () {
-            addTetro();
+        onRotateLeft: function () {
+            grid.rotateLeft();
+        },
+        onRotateRight: function () {
+            grid.rotateRight();
         },
         parentNode: root
     });

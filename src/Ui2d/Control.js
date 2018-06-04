@@ -1,9 +1,11 @@
 export default class Control {
-    constructor ({ onMoveLeft, onMoveRight, onMoveDown, onAdd, parentNode } = {}) {
+    constructor ({ onMoveLeft, onMoveRight, onMoveDown, onRotateLeft, onRotateRight, onAdd, parentNode } = {}) {
+        this.onAdd = onAdd;
         this.onMoveLeft = onMoveLeft;
         this.onMoveRight = onMoveRight;
         this.onMoveDown = onMoveDown;
-        this.onAdd = onAdd;
+        this.onRotateLeft = onRotateLeft;
+        this.onRotateRight = onRotateRight;
         this.parentNode = parentNode;
 
         this.render();
@@ -27,17 +29,27 @@ export default class Control {
         holder.name = "controlForm";
         holder.className = "controlForm";
 
-        const leftBtn = this.createButton ({
+        const rotateLeftBtn = this.createButton ({
+            label: "Rotate Left",
+            name: "rotateLeft",
+            onClick: this.onRotateLeft
+        });
+        const rotateRightBtn = this.createButton ({
+            label: "Rotate Right",
+            name: "rotateRight",
+            onClick: this.onRotateRight
+        });
+        const moveLeftBtn = this.createButton ({
             label: "Move Left",
             name: "moveLeft",
             onClick: this.onMoveLeft
         });
-        const rightBtn = this.createButton ({
+        const moveRightBtn = this.createButton ({
             label: "Move Right",
             name: "moveRight",
             onClick: this.onMoveRight
         });
-        const downBtn = this.createButton ({
+        const moveDownBtn = this.createButton ({
             label: "Move Down",
             name: "moveDown",
             onClick: this.onMoveDown
@@ -48,10 +60,18 @@ export default class Control {
             onClick: this.onAdd
         });
 
-        holder.appendChild(leftBtn);
-        holder.appendChild(downBtn);
-        holder.appendChild(rightBtn);
-        holder.appendChild(addBtn);
+        const row1 = document.createElement("div");
+        row1.appendChild(rotateLeftBtn);
+        row1.appendChild(addBtn);
+        row1.appendChild(rotateRightBtn);
+
+        const row2 = document.createElement("div");
+        row2.appendChild(moveLeftBtn);
+        row2.appendChild(moveDownBtn);
+        row2.appendChild(moveRightBtn);
+
+        holder.appendChild(row1);
+        holder.appendChild(row2);
 
         this.parentNode.appendChild(holder);
     }

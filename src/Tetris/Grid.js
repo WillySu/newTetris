@@ -135,6 +135,40 @@ export default class Grid {
         this.moveTetro({ direction: DOWN });
     }
 
+    // direction = [left, right]
+    rotateTetro ({ direction } = {}) {
+        if (this.updateMatrix({ reset: true })) {
+            if (direction === LEFT) {
+                this.tetro.rotateLeft();
+            } else if (direction === RIGHT) {
+                this.tetro.rotateRight();
+            }
+
+            if (!this.updateMatrix()) {
+                if (direction === LEFT) {
+                    this.tetro.rotateRight();
+                } else if (direction === RIGHT) {
+                    this.tetro.rotateLeft();
+                }
+
+                this.updateMatrix();
+            } else {
+                this.updateUiComponent();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    rotateLeft () {
+        this.rotateTetro({ direction: LEFT });
+    }
+
+    rotateRight () {
+        this.rotateTetro({ direction: RIGHT });
+    }
+
     updateUiComponent () {
         if (this.uiComponent && typeof this.uiComponent.update === "function") {
             this.uiComponent.update();

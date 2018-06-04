@@ -35,18 +35,18 @@ export default class Tetromino {
     }
 
     rotateLeft () {
-        this.rotationIndex--;
-
-        if (this.rotationIndex < 0) {
-            this.rotationIndex = 3;
-        }
-    }
-
-    rotateRight () {
         this.rotationIndex++;
 
         if (this.rotationIndex > 3) {
             this.rotationIndex = 0;
+        }
+    }
+
+    rotateRight () {
+        this.rotationIndex--;
+
+        if (this.rotationIndex < 0) {
+            this.rotationIndex = 3;
         }
     }
 }
