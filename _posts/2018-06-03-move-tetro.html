@@ -4,14 +4,10 @@ title:  "Add, Move, Rotate Tetro"
 date:   2018-06-03 20:48
 ---
 
-{% capture styles %}
-  {% include moveTetro/ui2d.scss %}
-{% endcapture %}
-<style>{{ styles | scssify | strip }}</style>
 <script>
 {% include moveTetro/bundle.js %}
 </script>
 
-<div style="display: flex;">
+<div class="main-holder">
   <div id="root"></div>
 </div>

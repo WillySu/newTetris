@@ -12,3 +12,8 @@ https://willysu.github.io/newTetris/
 
 Embed CSS - JavaScript in Jekyll
 https://notes.matthewgifford.com/inlining-css-and-javascript-in-jekyll-16b9af67e27f
+
+{% capture styles %}
+  {% include moveTetro/ui2d.scss %}
+{% endcapture %}
+<style>{{ styles | scssify | strip }}</style>
