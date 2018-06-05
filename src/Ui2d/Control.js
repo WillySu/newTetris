@@ -1,6 +1,7 @@
 export default class Control {
-    constructor ({ onMoveLeft, onMoveRight, onMoveDown, onRotateLeft, onRotateRight, onAdd, parentNode } = {}) {
+    constructor ({ onMoveLeft, onMoveRight, onMoveDown, onRotateLeft, onRotateRight, onAdd, onDrop, parentNode } = {}) {
         this.onAdd = onAdd;
+        this.onDrop = onDrop;
         this.onMoveLeft = onMoveLeft;
         this.onMoveRight = onMoveRight;
         this.onMoveDown = onMoveDown;
@@ -59,19 +60,28 @@ export default class Control {
             name: "addNew",
             onClick: this.onAdd
         });
+        const dropBtn = this.createButton ({
+            label: "Drop Tetro",
+            name: "dropTetro",
+            onClick: this.onDrop
+        });
 
         const row1 = document.createElement("div");
-        row1.appendChild(rotateLeftBtn);
         row1.appendChild(addBtn);
-        row1.appendChild(rotateRightBtn);
+        row1.appendChild(dropBtn);
 
         const row2 = document.createElement("div");
-        row2.appendChild(moveLeftBtn);
-        row2.appendChild(moveDownBtn);
-        row2.appendChild(moveRightBtn);
+        row2.appendChild(rotateLeftBtn);
+        row2.appendChild(rotateRightBtn);
+
+        const row3 = document.createElement("div");
+        row3.appendChild(moveLeftBtn);
+        row3.appendChild(moveDownBtn);
+        row3.appendChild(moveRightBtn);
 
         holder.appendChild(row1);
         holder.appendChild(row2);
+        holder.appendChild(row3);
 
         this.parentNode.appendChild(holder);
     }

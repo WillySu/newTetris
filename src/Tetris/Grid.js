@@ -1,6 +1,6 @@
 export const LEFT = "left";
 export const RIGHT = "right";
-export const DOWN = "down";
+export const BOTTOM = "bottom";
 
 export default class Grid {
     constructor ({ numOfCol = 10, numOfRow = 20, defaultTetroX, defaultTetroY, uiComponent } = {}) {
@@ -100,7 +100,7 @@ export default class Grid {
                 this.tetroX--;
             } else if (direction === RIGHT) {
                 this.tetroX++;
-            } else if (direction === DOWN) {
+            } else if (direction === BOTTOM) {
                 this.tetroY++;
             }
 
@@ -109,7 +109,7 @@ export default class Grid {
                     this.tetroX++;
                 } else if (direction === RIGHT) {
                     this.tetroX--;
-                } else if (direction === DOWN) {
+                } else if (direction === BOTTOM) {
                     this.tetroY--;
                 }
 
@@ -124,15 +124,21 @@ export default class Grid {
     }
 
     moveLeft () {
-        this.moveTetro({ direction: LEFT });
+        return this.moveTetro({ direction: LEFT });
     }
 
     moveRight () {
-        this.moveTetro({ direction: RIGHT });
+        return this.moveTetro({ direction: RIGHT });
     }
 
     moveDown () {
-        this.moveTetro({ direction: DOWN });
+        return this.moveTetro({ direction: BOTTOM });
+    }
+
+    drop () {
+        while (this.moveDown()) {
+            // keep looping until unable to go down
+        }
     }
 
     // direction = [left, right]
@@ -162,11 +168,11 @@ export default class Grid {
     }
 
     rotateLeft () {
-        this.rotateTetro({ direction: LEFT });
+        return this.rotateTetro({ direction: LEFT });
     }
 
     rotateRight () {
-        this.rotateTetro({ direction: RIGHT });
+        return this.rotateTetro({ direction: RIGHT });
     }
 
     updateUiComponent () {

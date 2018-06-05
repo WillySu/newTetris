@@ -1,7 +1,8 @@
-export default class Tetromino {
+import Tetromino from './Tetromino'
+
+export default class L extends Tetromino {
     constructor ({ name, color } = {}) {
-        this.name = name;
-        this.color = color || "red";
+        super({ name: "L", color: "yellow" });
 
         // 3 => [x, y] and Solid
         // 2 => [x, y] and Empty
@@ -26,27 +27,6 @@ export default class Tetromino {
                 [1, 0],
                 [1, 1]
             ]
-        ]; // Default L
-        this.rotationIndex = 0;
-    }
-
-    get rotation () {
-        return this.rotations[this.rotationIndex];
-    }
-
-    rotateLeft () {
-        this.rotationIndex--;
-
-        if (this.rotationIndex < 0) {
-            this.rotationIndex = 3;
-        }
-    }
-
-    rotateRight () {
-        this.rotationIndex++;
-
-        if (this.rotationIndex > 3) {
-            this.rotationIndex = 0;
-        }
+        ];
     }
 }
