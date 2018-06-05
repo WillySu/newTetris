@@ -2,7 +2,7 @@ import Tetromino from './Tetromino'
 
 export default class Z extends Tetromino {
     constructor ({ name, color } = {}) {
-        super({ name: "Z", color: "red" });
+        super({ name: "Z", color: "green" });
 
         // 3 => [x, y] and Solid
         // 2 => [x, y] and Empty
