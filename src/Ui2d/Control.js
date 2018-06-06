@@ -1,10 +1,26 @@
+export function getControlFactory({ grid, parentNode }) {
+    const control = new Control({
+        onMoveLeft: () => grid.moveLeft(),
+        onMoveRight: () => grid.moveRight(),
+        onRotateLeft: () => grid.rotateLeft(),
+        onRotateRight: () => grid.rotateRight(),
+        onStart: () => grid.start(),
+        onDrop: () => {
+            grid.drop();
+            grid.addTetro();
+        },
+        parentNode
+    });
+
+    return control;
+}
+
 export default class Control {
-    constructor ({ onMoveLeft, onMoveRight, onMoveDown, onRotateLeft, onRotateRight, onAdd, onDrop, parentNode } = {}) {
-        this.onAdd = onAdd;
+    constructor ({ onMoveLeft, onMoveRight, onRotateLeft, onRotateRight, onStart, onDrop, parentNode } = {}) {
+        this.onStart = onStart;
         this.onDrop = onDrop;
         this.onMoveLeft = onMoveLeft;
         this.onMoveRight = onMoveRight;
-        this.onMoveDown = onMoveDown;
         this.onRotateLeft = onRotateLeft;
         this.onRotateRight = onRotateRight;
         this.parentNode = parentNode;
@@ -50,15 +66,10 @@ export default class Control {
             name: "moveRight",
             onClick: this.onMoveRight
         });
-        const moveDownBtn = this.createButton ({
-            label: "Move Down",
-            name: "moveDown",
-            onClick: this.onMoveDown
-        });
-        const addBtn = this.createButton ({
-            label: "Add New Tetro",
-            name: "addNew",
-            onClick: this.onAdd
+        const startBtn = this.createButton ({
+            label: "Start",
+            name: "start",
+            onClick: this.onStart
         });
         const dropBtn = this.createButton ({
             label: "Drop Tetro",
@@ -67,7 +78,7 @@ export default class Control {
         });
 
         const row1 = document.createElement("div");
-        row1.appendChild(addBtn);
+        row1.appendChild(startBtn);
         row1.appendChild(dropBtn);
 
         const row2 = document.createElement("div");
@@ -76,7 +87,6 @@ export default class Control {
 
         const row3 = document.createElement("div");
         row3.appendChild(moveLeftBtn);
-        row3.appendChild(moveDownBtn);
         row3.appendChild(moveRightBtn);
 
         holder.appendChild(row1);

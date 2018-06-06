@@ -19,3 +19,9 @@ https://notes.matthewgifford.com/inlining-css-and-javascript-in-jekyll-16b9af67e
 <style>{{ styles | scssify | strip }}</style>
 
 https://stackoverflow.com/questions/38194032/how-to-update-ruby-version-2-0-0-to-the-latest-version-in-mac-osx-yosemite
+
+Solar System:
+https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Basic_animations
+
+requestAnimationFrame
+https://stackoverflow.com/questions/38709923/why-is-requestanimationframe-better-than-setinterval-or-settimeout

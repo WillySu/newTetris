@@ -1,6 +1,26 @@
+import I from "./I";
+import J from "./J";
+import L from "./L";
+import O from "./O";
+import S from "./S";
+import T from "./T";
+import Z from "./Z";
+
 export const LEFT = "left";
 export const RIGHT = "right";
 export const BOTTOM = "bottom";
+
+const TETROS = [
+    new I(),
+    new J(),
+    new L(),
+    new O(),
+    new S(),
+    new T(),
+    new Z()
+];
+
+const DEFAULT_TIMESTAMP = 3000;
 
 export default class Grid {
     constructor ({ numOfCol = 10, numOfRow = 20, defaultTetroX, defaultTetroY, uiComponent } = {}) {
@@ -8,11 +28,12 @@ export default class Grid {
         this.numOfRow = numOfRow;
         this.defaultTetroX = defaultTetroX || 0;
         this.defaultTetroY = defaultTetroY || 0;
-        this.tetro = undefined;
+        this.intervall = 1000; // 3 sec.
+        this.tetro = null;
         this.tetroX;
         this.tetroY;
+        this.timestamp = DEFAULT_TIMESTAMP;
         this.uiComponent = uiComponent;
-
         const matrix = [];
 
         for (let r = 0; r < numOfRow; r++) {
@@ -24,6 +45,11 @@ export default class Grid {
         if (this.uiComponent && typeof this.uiComponent.setMatrix === "function") {
             this.uiComponent.setMatrix(this.matrix);
         }
+    }
+
+    reset () {
+        this.matrix.forEach(cells => cells.fill(""));
+        console.log(this.matrix);
     }
 
     getTetroPositions () {
@@ -61,6 +87,7 @@ export default class Grid {
             });
 
             if (outOfBoundary) {
+                console.log("outOfBoundary");
                 return false;
             }
 
@@ -69,28 +96,40 @@ export default class Grid {
 
                 if (canReset) {
                     blockPositions.forEach(b => this.matrix[b.y][b.x] = "");
+                    console.log("canReset");
                     return true;
                 }
-            } else {
-                const canDrop = blockPositions.every(b => this.matrix[b.y][b.x] === "");
 
-                if (canDrop) {
+                console.log("cannotReset");
+            } else {
+                const canMove = blockPositions.every(b => this.matrix[b.y][b.x] === "");
+
+                if (canMove) {
                     blockPositions.forEach(b => this.matrix[b.y][b.x] = b.color);
+                    console.log("canMove");
                     return true;
                 }
+
+                console.log("cannotMove");
             }
         }
 
         return false;
     }
 
-    addTetro ({ tetro, x, y }) {
+    addTetro ({ x, y } = {}) {
+        const len = TETROS.length;
+        const rand = Math.floor(Math.random() * len);
+        this.tetro = TETROS[rand];
         this.tetroX = x || this.defaultTetroX;
         this.tetroY = y || this.defaultTetroY;
-        this.tetro = tetro;
 
-        this.updateMatrix();
-        this.updateUiComponent();
+        if (this.updateMatrix()) {
+            this.updateUiComponent();
+            return true;
+        }
+
+        return false;
     }
 
     // direction = [left, right, down]
@@ -179,5 +218,34 @@ export default class Grid {
         if (this.uiComponent && typeof this.uiComponent.update === "function") {
             this.uiComponent.update();
         }
+    }
+
+    start () {
+        this.addTetro();
+        this.dropping();
+    }
+
+    stop () {
+        this.reset();
+        this.updateUiComponent();
+    }
+
+    dropping (timestamp) {
+        if (timestamp - this.timestamp > this.intervall) {
+            this.timestamp = timestamp;
+            if (this.moveDown()) {
+
+            } else if (!this.addTetro()) {
+                this.gameOver()
+                return;
+            }
+        }
+
+        requestAnimationFrame((t) => this.dropping(t));
+    }
+
+    gameOver () {
+        this.timestamp = DEFAULT_TIMESTAMP;
+        this.stop();
     }
 }
