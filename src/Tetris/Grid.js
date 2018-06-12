@@ -32,6 +32,7 @@ export default class Grid {
         this.tetro = null;
         this.tetroX;
         this.tetroY;
+        this.timerKey = null;
         this.timestamp = DEFAULT_TIMESTAMP;
         this.uiComponent = uiComponent;
         const matrix = [];
@@ -47,7 +48,7 @@ export default class Grid {
         }
     }
 
-    reset () {
+    resetMatrix () {
         this.matrix.forEach(cells => cells.fill(""));
         console.log(this.matrix);
     }
@@ -87,7 +88,6 @@ export default class Grid {
             });
 
             if (outOfBoundary) {
-                console.log("outOfBoundary");
                 return false;
             }
 
@@ -96,21 +96,15 @@ export default class Grid {
 
                 if (canReset) {
                     blockPositions.forEach(b => this.matrix[b.y][b.x] = "");
-                    console.log("canReset");
                     return true;
                 }
-
-                console.log("cannotReset");
             } else {
                 const canMove = blockPositions.every(b => this.matrix[b.y][b.x] === "");
 
                 if (canMove) {
                     blockPositions.forEach(b => this.matrix[b.y][b.x] = b.color);
-                    console.log("canMove");
                     return true;
                 }
-
-                console.log("cannotMove");
             }
         }
 
@@ -221,31 +215,35 @@ export default class Grid {
     }
 
     start () {
-        this.addTetro();
+        if (!this.tetro) {
+            this.addTetro();
+        }
         this.dropping();
     }
 
     stop () {
-        this.reset();
-        this.updateUiComponent();
+        cancelAnimationFrame(this.timerKey);
     }
 
     dropping (timestamp) {
         if (timestamp - this.timestamp > this.intervall) {
             this.timestamp = timestamp;
             if (this.moveDown()) {
-
-            } else if (!this.addTetro()) {
+            } else if (this.addTetro()) {
+                // Reset timer
+                cancelAnimationFrame(this.timerKey);
+            } else {
                 this.gameOver()
                 return;
             }
         }
 
-        requestAnimationFrame((t) => this.dropping(t));
+        this.timerKey = requestAnimationFrame((t) => this.dropping(t));
     }
 
     gameOver () {
         this.timestamp = DEFAULT_TIMESTAMP;
-        this.stop();
+        this.resetMatrix();
+        this.updateUiComponent();
     }
 }
