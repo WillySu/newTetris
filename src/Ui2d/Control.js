@@ -2,6 +2,7 @@ export function getControlFactory({ grid, parentNode }) {
     const control = new Control({
         onMoveLeft: () => grid.moveLeft(),
         onMoveRight: () => grid.moveRight(),
+        onMoveDown: () => grid.moveDown(),
         onRotateLeft: () => grid.rotateLeft(),
         onRotateRight: () => grid.rotateRight(),
         onStart: () => grid.start(),
@@ -19,12 +20,13 @@ export function getControlFactory({ grid, parentNode }) {
 }
 
 export default class Control {
-    constructor ({ onMoveLeft, onMoveRight, onRotateLeft, onRotateRight, onStart, onStop, onDrop, parentNode } = {}) {
+    constructor ({ onMoveLeft, onMoveRight, onMoveDown, onRotateLeft, onRotateRight, onStart, onStop, onDrop, parentNode } = {}) {
         this.onStart = onStart;
         this.onStop = onStop;
         this.onDrop = onDrop;
         this.onMoveLeft = onMoveLeft;
         this.onMoveRight = onMoveRight;
+        this.onMoveDown = onMoveDown;
         this.onRotateLeft = onRotateLeft;
         this.onRotateRight = onRotateRight;
         this.parentNode = parentNode;
@@ -130,6 +132,12 @@ export default class Control {
             onClick: this.onDrop,
             disabled: true
         });
+        const moveDownBtn = this.createButton ({
+            label: "Move Down",
+            name: "moveDown",
+            onClick: this.onMoveDown,
+            disabled: true
+        });
 
         const row1 = document.createElement("div");
         row1.appendChild(startBtn);
@@ -137,11 +145,12 @@ export default class Control {
 
         const row2 = document.createElement("div");
         row2.appendChild(rotateLeftBtn);
+        row2.appendChild(dropBtn);
         row2.appendChild(rotateRightBtn);
 
         const row3 = document.createElement("div");
         row3.appendChild(moveLeftBtn);
-        row3.appendChild(dropBtn);
+        row3.appendChild(moveDownBtn);
         row3.appendChild(moveRightBtn);
 
         holder.appendChild(row1);
