@@ -9,6 +9,7 @@ import Z from "./Z";
 export const LEFT = "left";
 export const RIGHT = "right";
 export const BOTTOM = "bottom";
+export const EMPTY = "";
 
 const TETROS = [
     new I(),
@@ -28,6 +29,7 @@ export default class Grid {
         this.numOfRow = numOfRow;
         this.defaultTetroX = defaultTetroX || 0;
         this.defaultTetroY = defaultTetroY || 0;
+        this.isGameOver = false;
         this.intervall = 1000; // 3 sec.
         this.tetro = null;
         this.tetroX;
@@ -35,10 +37,11 @@ export default class Grid {
         this.timerKey = null;
         this.timestamp = DEFAULT_TIMESTAMP;
         this.uiComponent = uiComponent;
+        this.uiControl = null; // set by setControl after initialization
         const matrix = [];
 
         for (let r = 0; r < numOfRow; r++) {
-            matrix.push(new Array(numOfCol).fill(""));
+            matrix.push(new Array(numOfCol).fill(EMPTY));
         }
 
         this.matrix = matrix;
@@ -48,9 +51,12 @@ export default class Grid {
         }
     }
 
+    setControl (control) {
+        this.uiControl = control;
+    }
+
     resetMatrix () {
-        this.matrix.forEach(cells => cells.fill(""));
-        console.log(this.matrix);
+        this.matrix.forEach(cells => cells.fill(EMPTY));
     }
 
     getTetroPositions () {
@@ -92,14 +98,14 @@ export default class Grid {
             }
 
             if (reset) {
-                const canReset = blockPositions.every(b => this.matrix[b.y][b.x] !== "");
+                const canReset = blockPositions.every(b => this.matrix[b.y][b.x] !== EMPTY);
 
                 if (canReset) {
-                    blockPositions.forEach(b => this.matrix[b.y][b.x] = "");
+                    blockPositions.forEach(b => this.matrix[b.y][b.x] = EMPTY);
                     return true;
                 }
             } else {
-                const canMove = blockPositions.every(b => this.matrix[b.y][b.x] === "");
+                const canMove = blockPositions.every(b => this.matrix[b.y][b.x] === EMPTY);
 
                 if (canMove) {
                     blockPositions.forEach(b => this.matrix[b.y][b.x] = b.color);
@@ -165,7 +171,17 @@ export default class Grid {
     }
 
     moveDown () {
-        return this.moveTetro({ direction: BOTTOM });
+        const hasMovedDown = this.moveTetro({ direction: BOTTOM });
+
+        if (!hasMovedDown) {
+            const linesRemoved = this.checkFullLines();
+
+            if (linesRemoved) {
+                console.log("Number of Lines removed:", linesRemoved);
+            }
+        }
+
+        return hasMovedDown;
     }
 
     drop () {
@@ -215,9 +231,16 @@ export default class Grid {
     }
 
     start () {
+        if (this.isGameOver) {
+            this.resetMatrix();
+            this.updateUiComponent();
+            this.isGameOver = false;
+        }
+
         if (!this.tetro) {
             this.addTetro();
         }
+
         this.dropping();
     }
 
@@ -225,16 +248,51 @@ export default class Grid {
         cancelAnimationFrame(this.timerKey);
     }
 
+    checkFullLines () {
+        let numOfFullLines = 0;
+        let row = this.numOfRow - 1;
+
+        while (row >= 0) {
+            const isFullLine = this.matrix[row].every(cell => cell !== EMPTY);
+
+            if (isFullLine) {
+                this.removeFullLine(row);
+                numOfFullLines++;
+            } else {
+                row--;
+            }
+        }
+
+        return numOfFullLines;
+    }
+
+    removeFullLine (index) {
+        const { numOfCol } = this;
+
+        for (let row = index; row > 0; row--) {
+            if (row === 0) {
+                this.matrix[row].fill(EMPTY);
+            } else {
+                for (let cell = 0; cell < numOfCol; cell++) {
+                    this.matrix[row][cell] = this.matrix[row - 1][cell];
+                }
+            }
+        }
+
+        this.updateUiComponent();
+    }
+
     dropping (timestamp) {
         if (timestamp - this.timestamp > this.intervall) {
             this.timestamp = timestamp;
-            if (this.moveDown()) {
-            } else if (this.addTetro()) {
-                // Reset timer
-                cancelAnimationFrame(this.timerKey);
-            } else {
-                this.gameOver()
-                return;
+            if (!this.moveDown()) {
+              if (this.addTetro()) {
+                  // Reset timer
+                  cancelAnimationFrame(this.timerKey);
+              } else {
+                  this.gameOver();
+                  return;
+              }
             }
         }
 
@@ -243,7 +301,10 @@ export default class Grid {
 
     gameOver () {
         this.timestamp = DEFAULT_TIMESTAMP;
-        this.resetMatrix();
-        this.updateUiComponent();
+        this.isGameOver = true;
+        this.stop();
+        if (this.uiControl && typeof this.uiControl.stopUI === "function") {
+            this.uiControl.stopUI();
+        }
     }
 }

@@ -13,6 +13,8 @@ export function getControlFactory({ grid, parentNode }) {
         parentNode
     });
 
+    grid.setControl(control);
+
     return control;
 }
 
