@@ -1,4 +1,4 @@
-import Grid from "./Tetris/Grid";
+import TetrisGrid from "./Tetris/TetrisGrid";
 import Table from "./Ui2d/Table";
 import { getControlFactory } from "./Ui2d/Control";
 import { getScorePanelFactory } from "./Ui2d/ScorePanel";
@@ -8,7 +8,7 @@ import './styles/ui2d.scss'
 function init () {
     const tetris = document.getElementById("tetris");
     const table = new Table({ numOfCol: 10, numOfRow: 20, parentNode: tetris });
-    const grid = new Grid({
+    const grid = new TetrisGrid({
         numOfCol: 10,
         numOfRow: 20,
         defaultTetroX: 3,
