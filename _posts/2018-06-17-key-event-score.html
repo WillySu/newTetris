@@ -1,0 +1,65 @@
+---
+layout: post
+title:  "Key events, Score Panel and Speed Up"
+date:   2018-06-17 00:16
+---
+
+<script>
+{% include keyEvents/bundle.js %}
+</script>
+
+<div class="container">
+  <div class="main-panel">
+    <div id="tetris"></div>
+    <div id="controlPanel" class="control-panel"></div>
+  </div>
+  <div class="side-panel">
+    <div id="scorePanel"></div>
+  </div>
+</div>
+
+<br/>
+
+<b>Key Events</b>
+
+<ul>
+  <li>
+    Rotate Left: <b>Q</b> or <b>7</b>
+  </li>
+  <li>
+    Rotate Right: <b>E</b> or <b>9</b>
+  </li>
+  <li>
+    Move Left: <b>A</b>, <b>Left Arrow</b> or <b>4</b>
+  </li>
+  <li>
+    Move Right: <b>D</b>, <b>Right Arrow</b> or <b>6</b>
+  </li>
+  <li>
+    Move Down: <b>S</b>, <b>Down Arrow</b> or <b>5</b>
+  </li>
+  <li>
+    Drop: <b>W</b>, <b>Top Arrow</b> or <b>8</b>
+  </li>
+</ul>
+
+<b>Points</b>
+
+<ul>
+  <li>
+    1 line: <b>100</b>
+  </li>
+  <li>
+    2 line: <b>300</b>
+  </li>
+  <li>
+    3 line: <b>900</b>
+  </li>
+  <li>
+    4 line: <b>2700</b>
+  </li>
+</ul>
+
+<b>Level</b>
+<br/>
+Level up for each 10 lines removed

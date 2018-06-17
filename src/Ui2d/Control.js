@@ -142,7 +142,7 @@ export default class Control {
         const moveDownBtn = this.createButton ({
             label: "Move Down",
             name: "moveDown",
-            title: "Press S, Bottom Arrow or 5",
+            title: "Press S, Down Arrow or 5",
             onClick: this.onMoveDown,
             disabled: true
         });
