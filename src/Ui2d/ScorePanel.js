@@ -5,6 +5,8 @@ const SCORE_BY_LINES = [
     2700
 ];
 
+const NUM_OF_LINES_NEEDED_TO_LEVEL_UP = 20;
+
 export function getScorePanelFactory({ grid, parentNode }) {
     const scorePanel = new ScorePanel({
         parentNode,
@@ -50,7 +52,7 @@ export default class ScorePanel {
         this.updateLines(lines);
         this.updateScore(SCORE_BY_LINES[lines - 1]);
 
-        const newLevel = Math.floor(this.lines / 10) + 1;
+        const newLevel = Math.floor(this.lines / NUM_OF_LINES_NEEDED_TO_LEVEL_UP) + 1;
 
         if (newLevel > this.level) {
             this.levelUp();

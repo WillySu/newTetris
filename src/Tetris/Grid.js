@@ -23,6 +23,8 @@ const TETROS = [
 
 const DEFAULT_TIMESTAMP = 3000;
 
+const SPEED_UP_RATIO = 0.66;
+
 export default class Grid {
     constructor ({ numOfCol = 10, numOfRow = 20, defaultTetroX, defaultTetroY, uiComponent } = {}) {
         this.numOfCol = numOfCol;
@@ -333,6 +335,6 @@ export default class Grid {
     }
 
     speedUp () {
-        this.intervall = Math.round(this.intervall / 2);
+        this.intervall = Math.round(this.intervall * SPEED_UP_RATIO);
     }
 }

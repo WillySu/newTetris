@@ -40,7 +40,9 @@ export default class Control {
 
         button.setAttribute("name", name);
         button.setAttribute("type", "button");
-        button.setAttribute("title", title);
+        if (title) {
+            button.setAttribute("title", title);
+        }
         button.appendChild(document.createTextNode(label));
 
         if (typeof onClick === "function") {
