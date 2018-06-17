@@ -8,8 +8,9 @@ export function getControlFactory({ grid, parentNode }) {
         onStart: () => grid.start(),
         onStop: () => grid.stop(),
         onDrop: () => {
-            grid.drop();
-            grid.addTetro();
+            if (grid.drop()) {
+                grid.addTetro();
+            }
         },
         parentNode
     });
@@ -34,12 +35,13 @@ export default class Control {
         this.render();
     }
 
-    createButton ({ label, name, onClick, disabled }) {
+    createButton ({ label, name, onClick, disabled, title }) {
         const button = document.createElement("button");
 
         button.setAttribute("name", name);
         button.setAttribute("type", "button");
-        button.innerText = label;
+        button.setAttribute("title", title);
+        button.appendChild(document.createTextNode(label));
 
         if (typeof onClick === "function") {
             button.addEventListener("click", onClick);
@@ -83,29 +85,33 @@ export default class Control {
     render () {
         const holder = document.createElement("form");
         holder.name = "controlForm";
-        holder.className = "controlForm";
+        holder.className = "control-form";
 
         const rotateLeftBtn = this.createButton ({
             label: "Rotate Left",
             name: "rotateLeft",
+            title: "Press Q or 7",
             onClick: this.onRotateLeft,
             disabled: true
         });
         const rotateRightBtn = this.createButton ({
             label: "Rotate Right",
             name: "rotateRight",
+            title: "Press E or 9",
             onClick: this.onRotateRight,
             disabled: true
         });
         const moveLeftBtn = this.createButton ({
             label: "Move Left",
             name: "moveLeft",
+            title: "Press A, Left Arrow or 4",
             onClick: this.onMoveLeft,
             disabled: true
         });
         const moveRightBtn = this.createButton ({
             label: "Move Right",
             name: "moveRight",
+            title: "Press D, Right Arrow or 6",
             onClick: this.onMoveRight,
             disabled: true
         });
@@ -129,12 +135,14 @@ export default class Control {
         const dropBtn = this.createButton ({
             label: "Drop Tetro",
             name: "dropTetro",
+            title: "Press W, Top Arrow or 8",
             onClick: this.onDrop,
             disabled: true
         });
         const moveDownBtn = this.createButton ({
             label: "Move Down",
             name: "moveDown",
+            title: "Press S, Bottom Arrow or 5",
             onClick: this.onMoveDown,
             disabled: true
         });
@@ -158,5 +166,43 @@ export default class Control {
         holder.appendChild(row3);
 
         this.parentNode.appendChild(holder);
+    }
+
+    checkKey(ev) {
+        switch (event.code) {
+            case "ArrowLeft":
+            case "Numpad4":
+            case "KeyA":
+                this.onMoveLeft();
+                break;
+            case "ArrowRight":
+            case "Numpad6":
+            case "KeyD":
+                this.onMoveRight();
+                break;
+            case "ArrowUp":
+            case "Numpad8":
+            case "KeyW":
+                this.onDrop();
+                break;
+            case "ArrowDown":
+            case "Numpad2":
+            case "Numpad5":
+            case "KeyS":
+                this.onMoveDown();
+                break;
+            case "Numpad7":
+            case "KeyQ":
+                this.onRotateLeft();
+                break;
+            case "Numpad9":
+            case "KeyE":
+                this.onRotateRight();
+                break;
+        }
+    }
+
+    addKeyListeners () {
+        document.body.addEventListener("keyup", (ev) => this.checkKey(ev));
     }
 }

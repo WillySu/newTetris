@@ -30,7 +30,8 @@ export default class Grid {
         this.defaultTetroX = defaultTetroX || 0;
         this.defaultTetroY = defaultTetroY || 0;
         this.isGameOver = false;
-        this.intervall = 1000; // 3 sec.
+        this.isStarted = false;
+        this.intervall = DEFAULT_TIMESTAMP; // 3 sec.
         this.tetro = null;
         this.tetroX;
         this.tetroY;
@@ -38,6 +39,7 @@ export default class Grid {
         this.timestamp = DEFAULT_TIMESTAMP;
         this.uiComponent = uiComponent;
         this.uiControl = null; // set by setControl after initialization
+        this.uiScorePanel = null; // set by setScorePanel after initialization
         const matrix = [];
 
         for (let r = 0; r < numOfRow; r++) {
@@ -53,6 +55,10 @@ export default class Grid {
 
     setControl (control) {
         this.uiControl = control;
+    }
+
+    setScorePanel (scorePanel) {
+        this.uiScorePanel = scorePanel;
     }
 
     resetMatrix () {
@@ -134,6 +140,10 @@ export default class Grid {
 
     // direction = [left, right, down]
     moveTetro ({ direction } = {}) {
+        if (!this.isStarted) {
+            return false;
+        }
+
         if (this.updateMatrix({ reset: true })) {
             if (direction === LEFT) {
                 this.tetroX--;
@@ -177,7 +187,9 @@ export default class Grid {
             const linesRemoved = this.checkFullLines();
 
             if (linesRemoved) {
-                console.log("Number of Lines removed:", linesRemoved);
+                if (this.uiScorePanel && typeof this.uiScorePanel.update === "function") {
+                    this.uiScorePanel.update(linesRemoved);
+                }
             }
         }
 
@@ -185,6 +197,10 @@ export default class Grid {
     }
 
     drop () {
+        if (!this.isStarted) {
+            return false;
+        }
+
         while (this.moveDown()) {
             // keep looping until unable to go down
         }
@@ -192,6 +208,10 @@ export default class Grid {
 
     // direction = [left, right]
     rotateTetro ({ direction } = {}) {
+        if (!this.isStarted) {
+            return false;
+        }
+
         if (this.updateMatrix({ reset: true })) {
             if (direction === LEFT) {
                 this.tetro.rotateLeft();
@@ -231,10 +251,13 @@ export default class Grid {
     }
 
     start () {
+        this.isStarted = true;
+
         if (this.isGameOver) {
             this.resetMatrix();
             this.updateUiComponent();
             this.isGameOver = false;
+            this.intervall = DEFAULT_TIMESTAMP;
         }
 
         if (!this.tetro) {
@@ -245,6 +268,7 @@ export default class Grid {
     }
 
     stop () {
+        this.isStarted = false;
         cancelAnimationFrame(this.timerKey);
     }
 
@@ -306,5 +330,9 @@ export default class Grid {
         if (this.uiControl && typeof this.uiControl.stopUI === "function") {
             this.uiControl.stopUI();
         }
+    }
+
+    speedUp () {
+        this.intervall = Math.round(this.intervall / 2);
     }
 }
