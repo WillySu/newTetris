@@ -13,22 +13,39 @@
   background-color: #eee;
 }
 
-.side-panel {
+.right-side-panel {
   margin-left: 12px;
 }
 
-.side-panel div {
+.right-side-panel div {
   margin-bottom: 12px;
 }
 
-.score-panel {
+.left-side-panel {
+  margin-right: 12px;
+}
+
+.score-panel,
+.coming-tetro-panel {
   border: 1px solid #000;
   padding: 6px 12px;
 }
 
-.score-panel div {
+.score-panel {
   min-width: 120px;
+}
+
+.score-panel div {
   text-align: right;
   border-bottom: 1px solid #888;
   padding-bottom: 6px
+}
+
+.coming-tetro-panel {
+  min-width: 90px;
+}
+
+.coming-tetro-panel strong {
+  display: block;
+  padding-bottom: 12px;
 }

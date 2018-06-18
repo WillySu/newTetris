@@ -1,4 +1,4 @@
-table.grid-2d {
+table.tetris-table {
   border-collapse: collapse;
   border: 2px solid #444;
   margin-bottom: 0;
@@ -11,6 +11,17 @@ table.grid-2d {
   }
 }
 
+table.transparent-table {
+  border-collapse: collapse;
+}
+
+table.transparent-table td {
+  border: 1px solid #aaa;
+  height: 12px;
+  width: 12px;
+  border-color: transparent;
+}
+
 form.control-form {
   button {
     margin-right: 6px;
@@ -19,4 +30,14 @@ form.control-form {
   :last-child {
     margin-right: 0;
   }
+}
+
+.tetro-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tetro-list li {
+  margin-bottom: 12px;
 }

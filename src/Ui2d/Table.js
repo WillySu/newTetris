@@ -1,10 +1,10 @@
 export default class Table {
-    constructor ({ numOfCol = 10, numOfRow = 20, parentNode, grid, matrix } = {}) {
+    constructor ({ numOfCol = 10, numOfRow = 20, parentNode, matrix, className = "grid-2d" } = {}) {
         this.numOfCol = numOfCol;
         this.numOfRow = numOfRow;
         this.parentNode = parentNode; // Parent DOM Element
         this.table = document.createElement("table");
-        this.table.className = "grid-2d";
+        this.table.className = className;
         this.matrix = matrix;
 
         this.init();
@@ -45,6 +45,7 @@ export default class Table {
 
     update () {
         const matrix = this.matrix;
+
         for (let row = 0; row < matrix.length; row++) {
             for (let cel = 0; cel < matrix[row].length; cel++) {
                 const bgColor = matrix[row][cel] || "transparent";

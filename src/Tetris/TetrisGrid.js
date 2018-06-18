@@ -2,7 +2,7 @@ export const LEFT = "left";
 export const RIGHT = "right";
 export const BOTTOM = "bottom";
 
-import Grid, { EMPTY, TETROS } from "./Grid";
+import Grid, { EMPTY } from "./Grid";
 
 const DEFAULT_TIMESTAMP = 3000;
 

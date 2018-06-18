@@ -1,22 +1,4 @@
-import I from "./I";
-import J from "./J";
-import L from "./L";
-import O from "./O";
-import S from "./S";
-import T from "./T";
-import Z from "./Z";
-
 export const EMPTY = "";
-
-export const TETROS = [
-    new I(),
-    new J(),
-    new L(),
-    new O(),
-    new S(),
-    new T(),
-    new Z()
-];
 
 export default class Grid {
     constructor ({ numOfCol = 10, numOfRow = 20, defaultTetroX, defaultTetroY, uiComponent } = {}) {
@@ -39,6 +21,12 @@ export default class Grid {
         if (this.uiComponent && typeof this.uiComponent.setMatrix === "function") {
             this.uiComponent.setMatrix(this.matrix);
         }
+
+        this.tetroGenerator = null; // set by setScorePanel after initialization
+    }
+
+    setTetroGenerator (tetroGenerator) {
+        this.tetroGenerator = tetroGenerator;
     }
 
     resetMatrix () {
@@ -85,14 +73,12 @@ export default class Grid {
 
             if (reset) {
                 const canReset = blockPositions.every(b => this.matrix[b.y][b.x] !== EMPTY);
-
                 if (canReset) {
                     blockPositions.forEach(b => this.matrix[b.y][b.x] = EMPTY);
                     return true;
                 }
             } else {
                 const canMove = blockPositions.every(b => this.matrix[b.y][b.x] === EMPTY);
-
                 if (canMove) {
                     blockPositions.forEach(b => this.matrix[b.y][b.x] = b.color);
                     return true;
@@ -103,10 +89,13 @@ export default class Grid {
         return false;
     }
 
-    addTetro ({ x, y } = {}) {
-        const len = TETROS.length;
-        const rand = Math.floor(Math.random() * len);
-        this.tetro = TETROS[rand];
+    addTetro ({ x, y, tetro } = {}) {
+        if (tetro) {
+            this.tetro = tetro;
+        } else if (this.tetroGenerator) {
+            this.tetro = this.tetroGenerator.getComingTetro();
+        }
+
         this.tetroX = x || this.defaultTetroX;
         this.tetroY = y || this.defaultTetroY;
 
