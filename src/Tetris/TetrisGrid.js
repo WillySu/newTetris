@@ -78,8 +78,8 @@ export default class TetrisGrid extends Grid {
             const linesRemoved = this.checkFullLines();
 
             if (linesRemoved) {
-                if (this.uiScorePanel && typeof this.uiScorePanel.update === "function") {
-                    this.uiScorePanel.update(linesRemoved);
+                if (this.uiScorePanel && typeof this.uiScorePanel.addLines === "function") {
+                    this.uiScorePanel.addLines(linesRemoved);
                 }
             }
         }
@@ -219,5 +219,17 @@ export default class TetrisGrid extends Grid {
 
     speedUp () {
         this.intervall = Math.round(this.intervall * SPEED_UP_RATIO);
+    }
+
+    addTetro (params) {
+        const added = super.addTetro(params);
+
+        if (added) {
+            if (this.uiScorePanel && typeof this.uiScorePanel.addTetro === "function") {
+                this.uiScorePanel.addTetro(this.tetro.name);
+            }
+        }
+
+        return added;
     }
 }

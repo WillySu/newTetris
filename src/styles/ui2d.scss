@@ -32,7 +32,8 @@ form.control-form {
   }
 }
 
-.tetro-list {
+.tetro-list,
+.statics-list {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -40,4 +41,18 @@ form.control-form {
 
 .tetro-list li {
   margin-bottom: 12px;
+}
+
+.statics-list li {
+  display: flex;
+  margin-bottom: 6px;
+}
+
+.statics-list {
+  margin-top: 12px;
+}
+
+.statics-list table.transparent-table td{
+  height: 6px;
+  width: 6px;
 }

@@ -1,3 +1,7 @@
+import Table from "./Table";
+import Grid from "../Tetris/Grid";
+import { TETROS } from "./TetroGenerator";
+
 const SCORE_BY_LINES = [
     100,
     300,
@@ -28,6 +32,11 @@ export default class ScorePanel {
         this.scoreDiv = null;
         this.linesDiv = null;
         this.onLevelUp = onLevelUp;
+        this.tetroCounterMap = TETROS.reduce((map, t) => {
+            map[t.name] = 0;
+            return map;
+        }, {});
+        this.counterHolderMap = {};
 
         this.render();
     }
@@ -43,13 +52,10 @@ export default class ScorePanel {
         this.scoreDiv.innerText = this.score;
     }
 
-    updateLines (lines) {
+    addLines (lines) {
         this.lines = this.lines + lines;
         this.linesDiv.innerText = this.lines;
-    }
 
-    update (lines) {
-        this.updateLines(lines);
         this.updateScore(SCORE_BY_LINES[lines - 1]);
 
         const newLevel = Math.floor(this.lines / NUM_OF_LINES_NEEDED_TO_LEVEL_UP) + 1;
@@ -57,6 +63,49 @@ export default class ScorePanel {
         if (newLevel > this.level) {
             this.levelUp();
         }
+    }
+
+    addTetro(tetroName) {
+        this.tetroCounterMap[tetroName] = this.tetroCounterMap[tetroName] + 1;
+        this.counterHolderMap[tetroName].innerText = this.tetroCounterMap[tetroName];
+    }
+
+    getStatics () {
+        const numOfCol = 4;
+        const numOfRow = 4;
+
+        const ul = document.createElement("ul");
+        ul.className = "statics-list";
+
+        TETROS.forEach((tetro) =>{
+            const table = new Table({
+                numOfCol,
+                numOfRow,
+                className: 'transparent-table'
+            });
+
+            const grid = new Grid({
+                numOfCol,
+                numOfRow,
+                uiComponent: table
+            });
+
+            grid.addTetro({ tetro });
+
+            const li = document.createElement("li");
+            li.appendChild(table.table);
+
+            const tetroName = tetro.name;
+            const span = this.counterHolderMap[tetroName] = document.createElement("span");
+            span.innerText = this.tetroCounterMap[tetroName];
+
+            li.appendChild(table.table);
+            li.appendChild(span);
+
+            ul.appendChild(li);
+        });
+
+        return ul;
     }
 
     render () {
@@ -78,12 +127,17 @@ export default class ScorePanel {
         this.linesDiv = document.createElement("div");
         this.linesDiv.innerText = this.lines;
 
+        const statisticsHeading = document.createElement("strong");
+        statisticsHeading.appendChild(document.createTextNode("Statistics:"));
+
         holder.appendChild(levelHeading);
         holder.appendChild(this.levelDiv);
         holder.appendChild(scoreHeading);
         holder.appendChild(this.scoreDiv);
         holder.appendChild(linesHeading);
         holder.appendChild(this.linesDiv);
+        holder.appendChild(statisticsHeading);
+        holder.appendChild(this.getStatics());
 
         this.parentNode.appendChild(holder);
     }
