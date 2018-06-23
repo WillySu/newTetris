@@ -2,24 +2,44 @@ table.tetris-table {
   border-collapse: collapse;
   border: 2px solid #444;
   margin-bottom: 0;
+  width: auto;
+
+  tr:nth-child(even) {
+    td:nth-child(odd) {
+      background-color: #f8f8f8;
+    }
+  }
+
+  tr:nth-child(odd) {
+    td:nth-child(even) {
+      background-color: #f8f8f8;
+    }
+  }
 
   td {
     padding: 0;
     border: 1px solid #aaa;
     height: 24px;
     width: 24px;
+    background-color: #fff;
   }
 }
 
 table.transparent-table {
   border-collapse: collapse;
-}
+  width: auto;
+  margin-bottom: 0;
 
-table.transparent-table td {
-  border: 1px solid #aaa;
-  height: 12px;
-  width: 12px;
-  border-color: transparent;
+  tr {
+    background-color: transparent;
+
+    td {
+      height: 12px;
+      width: 12px;
+      padding: 0;
+      border: 1px solid transparent;
+    }
+  }
 }
 
 form.control-form {
@@ -40,19 +60,22 @@ form.control-form {
 }
 
 .tetro-list li {
-  margin-bottom: 12px;
-}
-
-.statics-list li {
   display: flex;
-  margin-bottom: 6px;
+  justify-content: center;
+  margin-bottom: 12px;
 }
 
 .statics-list {
   margin-top: 12px;
-}
 
-.statics-list table.transparent-table td{
-  height: 6px;
-  width: 6px;
+  li {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 12px;
+
+    table.transparent-table td {
+      height: 6px;
+      width: 6px;
+    }
+  }
 }

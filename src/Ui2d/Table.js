@@ -48,8 +48,12 @@ export default class Table {
 
         for (let row = 0; row < matrix.length; row++) {
             for (let cel = 0; cel < matrix[row].length; cel++) {
-                const bgColor = matrix[row][cel] || "transparent";
-                this.table.rows[row].cells[cel].style.backgroundColor = bgColor;
+                const bgColor = matrix[row][cel];
+                if (bgColor) {
+                  this.table.rows[row].cells[cel].style.backgroundColor = bgColor;
+                } else {
+                  this.table.rows[row].cells[cel].removeAttribute('style');
+                }
             }
         }
     }
