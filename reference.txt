@@ -25,3 +25,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Basic_anima
 
 requestAnimationFrame
 https://stackoverflow.com/questions/38709923/why-is-requestanimationframe-better-than-setinterval-or-settimeout
+
+THREE.js
+https://threejs.org/docs/#manual/introduction/Import-via-modules
+https://threejs.org/docs/index.html#manual/introduction/Creating-a-scene
