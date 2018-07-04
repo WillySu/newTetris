@@ -1,6 +1,7 @@
 .container {
   display: flex;
   flex-direction: row;
+  background-color: #eee;
 }
 
 .main-panel {
@@ -10,7 +11,7 @@
 
 .control-panel {
   padding: 6px;
-  background-color: #eee;
+  background-color: #e8e8e8;
 }
 
 .right-side-panel {
@@ -29,6 +30,7 @@
 .coming-tetro-panel {
   border: 2px solid #000;
   padding: 6px 12px;
+  background-color: #ddd;
 }
 
 .score-panel {

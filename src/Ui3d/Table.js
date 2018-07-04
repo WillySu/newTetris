@@ -1,4 +1,30 @@
 import * as THREE from 'three';
+import BackImage from "./BackImage";
+
+const BACK_W = 32;
+const BACK_H = 32;
+const COLORS = [
+    "red",
+    "green",
+    "blue",
+    "cyan",
+    "magenta",
+    "yellow",
+    "silver"
+];
+const TEXTURE_MAP = COLORS.reduce((memo, c) => {
+  const canvas = new BackImage({ height: BACK_H, width: BACK_W, color: c });
+  const image = canvas.getImage();
+  const texture = new THREE.Texture(image);
+
+  image.onload = () => {
+    texture.needsUpdate = true;
+  };
+
+  memo[c] = texture;
+
+  return memo;
+}, {});
 
 export default class Table {
     constructor ({ numOfCol = 10, numOfRow = 20, parentNode, matrix } = {}) {
@@ -33,18 +59,25 @@ export default class Table {
     init () {
         const { numOfCol, numOfRow } = this;
         const sizeMultiplier = 30;
-        const width = numOfCol * sizeMultiplier;
+        const widthAdjust = 2;
+        const width = (numOfCol + widthAdjust) * sizeMultiplier;
         const height = numOfRow * sizeMultiplier;
+        const zero = new THREE.Vector3(0, -1.5, 0);
 
         this.scene = new THREE.Scene();
 
-        /* const geometry = new THREE.PlaneGeometry(numOfCol, numOfRow);
-        const material = new THREE.MeshBasicMaterial({color: "#aaa", opacity:0.5});
-        const plane = new THREE.Mesh(geometry, material);
-        this.scene.add(plane); */
-
         this.camera = new THREE.PerspectiveCamera(75, width / height, 1, 1000);
+        this.camera.position.y = -6;
         this.camera.position.z = 14;
+        this.camera.lookAt(zero);
+
+        /* const dirLight = new THREE.DirectionalLight("#fff", 1);
+        dirLight.position.set(0, -15, 0);
+        dirLight.lookAt(zero);
+        dirLight.castShadow = true;
+        // dirLight.position.multiplyScalar( 30 );
+        this.scene.add(dirLight); */
+
 
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setSize(width, height);
@@ -63,8 +96,11 @@ export default class Table {
             this.cubeMatrix[row] = [];
 
             for (let cel = 0; cel < matrix[row].length; cel++) {
-                const geometry = new THREE.CubeGeometry(1, 1, 1);
-                const cube = new THREE.Mesh(geometry);
+                // const geometry = new THREE.BoxBufferGeometry(1, 1, 1);
+                // const material = new THREE.MeshStandardMaterial({ wireframe: true });
+                const geometry = new THREE.BoxGeometry(1, 1, 1);
+                const material = new THREE.MeshBasicMaterial({ wireframe: true });
+                const cube = new THREE.Mesh(geometry, material);
 
                 cube.position.x = celInit + cel;
                 cube.position.y = rowInit - row;
@@ -86,12 +122,19 @@ export default class Table {
                 const bgColor = matrix[row][cel];
 
                 if (bgColor) {
-                  const material = new THREE.MeshBasicMaterial({color: bgColor, wireframe: true});
-                  cube.material = material;
-                  scene.add(cube);
+                  // cube.material.color.set(bgColor);
+                  // cube.material.wireframe = false;
+                  // scene.add(cube);
+                  cube.material.map = TEXTURE_MAP[bgColor];
+                  cube.material.wireframe = false;
                 } else {
-                  scene.remove(cube);
+                  cube.material.map = null;
+                  cube.material.color.set('white');
+                  cube.material.wireframe = true;
+                  // scene.remove(cube);
                 }
+
+                cube.material.needsUpdate = true;
             }
         }
 
