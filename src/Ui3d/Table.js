@@ -12,6 +12,7 @@ const COLORS = [
     "yellow",
     "silver"
 ];
+const DEFAULT_GRID_COLOR = "#444";
 const TEXTURE_MAP = COLORS.reduce((memo, c) => {
   const canvas = new BackImage({ height: BACK_H, width: BACK_W, color: c });
   const image = canvas.getImage();
@@ -99,7 +100,7 @@ export default class Table {
                 // const geometry = new THREE.BoxBufferGeometry(1, 1, 1);
                 // const material = new THREE.MeshStandardMaterial({ wireframe: true });
                 const geometry = new THREE.BoxGeometry(1, 1, 1);
-                const material = new THREE.MeshBasicMaterial({ wireframe: true });
+                const material = new THREE.MeshBasicMaterial({ color: DEFAULT_GRID_COLOR, wireframe: true });
                 const cube = new THREE.Mesh(geometry, material);
 
                 cube.position.x = celInit + cel;
@@ -126,10 +127,11 @@ export default class Table {
                   // cube.material.wireframe = false;
                   // scene.add(cube);
                   cube.material.map = TEXTURE_MAP[bgColor];
+                  cube.material.color.set("white");
                   cube.material.wireframe = false;
                 } else {
                   cube.material.map = null;
-                  cube.material.color.set('white');
+                  cube.material.color.set(DEFAULT_GRID_COLOR);
                   cube.material.wireframe = true;
                   // scene.remove(cube);
                 }

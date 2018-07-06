@@ -39,6 +39,10 @@ table.transparent-table {
       padding: 0;
       border: 1px solid transparent;
     }
+
+    td[style] {
+      border: 1px solid black;
+    }
   }
 }
 
