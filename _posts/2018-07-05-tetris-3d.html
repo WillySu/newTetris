@@ -1,0 +1,49 @@
+---
+layout: post
+title:  "Tetris 3D - Three.js"
+date:   2018-07-05 20:38
+---
+
+<script>
+{% include tetris3D/bundle.js %}
+</script>
+
+  <div class="container">
+    <div class="left-side-panel">
+      <div id="comingTetroPanel" class="coming-tetro-panel">
+        <strong>Coming<br/>Tetrominoes</strong>
+      </div>
+    </div>
+    <div class="main-panel">
+      <div id="tetris"></div>
+      <div id="controlPanel" class="control-panel"></div>
+    </div>
+    <div class="right-side-panel">
+      <div id="scorePanel"></div>
+    </div>
+  </div>
+
+<br/>
+
+<b>Key Events</b>
+
+<ul>
+  <li>
+    Rotate Left: <b>Q</b> or <b>7</b>
+  </li>
+  <li>
+    Rotate Right: <b>E</b> or <b>9</b>
+  </li>
+  <li>
+    Move Left: <b>A</b>, <b>Left Arrow</b> or <b>4</b>
+  </li>
+  <li>
+    Move Right: <b>D</b>, <b>Right Arrow</b> or <b>6</b>
+  </li>
+  <li>
+    Move Down: <b>S</b>, <b>Down Arrow</b> or <b>5</b>
+  </li>
+  <li>
+    Drop: <b>W</b>, <b>Top Arrow</b> or <b>8</b>
+  </li>
+</ul>
