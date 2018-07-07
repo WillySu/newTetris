@@ -19,6 +19,8 @@ export default class TetrisGrid extends Grid {
         this.timestamp = DEFAULT_TIMESTAMP;
         this.uiControl = null; // set by setControl after initialization
         this.uiScorePanel = null; // set by setScorePanel after initialization
+        this.soundMap = params && params.soundMap;
+        this.playingDropSound = false;
     }
 
     setControl (control) {
@@ -45,15 +47,7 @@ export default class TetrisGrid extends Grid {
             }
 
             if (!this.updateMatrix()) {
-                if (direction === LEFT) {
-                    this.tetroX++;
-                } else if (direction === RIGHT) {
-                    this.tetroX--;
-                } else if (direction === BOTTOM) {
-                    this.tetroY--;
-                }
-
-                this.updateMatrix();
+                this.moveRollback(direction);
             } else {
                 this.updateUiComponent();
                 return true;
@@ -61,6 +55,24 @@ export default class TetrisGrid extends Grid {
         }
 
         return false;
+    }
+
+    moveRollback (direction) {
+        if (direction === LEFT) {
+            this.tetroX++;
+        } else if (direction === RIGHT) {
+            this.tetroX--;
+        } else if (direction === BOTTOM) {
+            this.tetroY--;
+        }
+
+        this.updateMatrix();
+
+        if (this.playingDropSound) {
+            this.playingDropSound = false;
+        } else if (this.soundMap && this.soundMap.standard) {
+            this.soundMap.standard.play();
+        }
     }
 
     moveLeft () {
@@ -94,6 +106,11 @@ export default class TetrisGrid extends Grid {
 
         while (this.moveDown()) {
             // keep looping until unable to go down
+        }
+
+        if (this.soundMap && this.soundMap.drop) {
+            this.soundMap.drop.play();
+            this.playingDropSound = true;
         }
     }
 

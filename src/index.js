@@ -7,6 +7,21 @@ import { getTetroGeneratorFactory } from "./Ui2d/TetroGenerator";
 import './styles/layout.scss'
 import './styles/ui2d.scss'
 
+const AUDIO_FILE_MAP = {
+    standard: "/newTetris/assets/zapsplat_impacts_wood_panel_loose_hit_vibrate_002_20658.mp3",
+    drop: "/newTetris/assets/zapsplat_impacts_metal_pole_hit_vibrate_001_20655.mp3"
+};
+
+function loadAudio () {
+    const audioMap = Object.keys(AUDIO_FILE_MAP).reduce((map, path) => {
+        map[path] = document.createElement("audio");
+        map[path].src = AUDIO_FILE_MAP[path];
+        return map;
+    }, {});
+
+    return audioMap;
+}
+
 function init () {
     const numOfCol = 10;
     const numOfRow = 20;
@@ -18,7 +33,8 @@ function init () {
         numOfRow,
         defaultTetroX: 3,
         defaultTetroY: 0,
-        uiComponent: table3d
+        uiComponent: table3d,
+        soundMap: loadAudio()
     });
 
     const controlPanel = document.getElementById("controlPanel");
