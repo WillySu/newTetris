@@ -23,7 +23,7 @@ github_username:  WillySu
 
 # Build settings
 markdown: kramdown
-theme: minima
+theme: jekyll-theme-time-machine
 plugins:
   - jekyll-feed
 
