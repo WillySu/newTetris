@@ -23,7 +23,7 @@ github_username:  WillySu
 
 # Build settings
 markdown: kramdown
-theme: jekyll-theme-minimal
+theme: minima
 plugins:
   - jekyll-feed
 
@@ -38,6 +38,3 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
-
-sass:
-  style: compressed
